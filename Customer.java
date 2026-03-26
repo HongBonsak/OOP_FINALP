@@ -24,7 +24,7 @@ public class Customer extends User {
         }
         double total = calculateTotal(item, quantity);
         if (payment < total) {
-            return String.format("Insufficient payment. Total: $%.2f", total);
+            throw new IllegalArgumentException(String.format("Insufficient payment. Total: $%.2f", total));
         }
 
         item.setStock(item.getStock() - quantity);
