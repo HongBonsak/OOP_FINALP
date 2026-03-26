@@ -59,7 +59,46 @@ public class StyleHubGUI extends JFrame {
                 ClothingItem item = store.findItemByName(productName);
 
                 if (item != null) {
-                    displayArea.setText(customer.buyItem(item) + "\n\n" + store.showAllItems());
+                    String quantityInput = JOptionPane.showInputDialog(this, "Enter quantity:");
+                    if (quantityInput == null || quantityInput.trim().isEmpty()) {
+                        return;
+                    }
+                    int quantity;
+                    try {
+                        quantity = Integer.parseInt(quantityInput);
+                    } catch (NumberFormatException ex) {
+                        displayArea.setText("Invalid quantity format.");
+                        return;
+                    }
+
+                    double total;
+                    try {
+                        total = customer.calculateTotal(item, quantity);
+                    } catch (IllegalArgumentException ex) {
+                        displayArea.setText(ex.getMessage());
+                        return;
+                    }
+
+                    String paymentInput = JOptionPane.showInputDialog(
+                            this,
+                            String.format("Total is $%.2f. Enter payment amount:", total)
+                    );
+                    if (paymentInput == null || paymentInput.trim().isEmpty()) {
+                        return;
+                    }
+                    double payment;
+                    try {
+                        payment = Double.parseDouble(paymentInput);
+                    } catch (NumberFormatException ex) {
+                        displayArea.setText("Invalid payment amount format.");
+                        return;
+                    }
+
+                    try {
+                        displayArea.setText(customer.buyItem(item, quantity, payment) + "\n\n" + store.showAllItems());
+                    } catch (IllegalArgumentException ex) {
+                        displayArea.setText(ex.getMessage());
+                    }
                 } else {
                     displayArea.setText("Product not found.");
                 }
@@ -117,7 +156,7 @@ public class StyleHubGUI extends JFrame {
         panel.add(detailBtn);
 
         detailBtn.addActionListener(e -> {
-         displayArea.setText(store.showItemDetails());
-});
+            displayArea.setText(store.showItemDetails());
+        });
     }
 }
