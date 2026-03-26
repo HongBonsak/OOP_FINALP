@@ -59,7 +59,30 @@ public class StyleHubGUI extends JFrame {
                 ClothingItem item = store.findItemByName(productName);
 
                 if (item != null) {
-                    displayArea.setText(customer.buyItem(item) + "\n\n" + store.showAllItems());
+                    try {
+                        String quantityInput = JOptionPane.showInputDialog(this, "Enter quantity:");
+                        if (quantityInput == null || quantityInput.trim().isEmpty()) {
+                            return;
+                        }
+                        int quantity = Integer.parseInt(quantityInput);
+                        if (quantity <= 0) {
+                            displayArea.setText("Quantity must be at least 1.");
+                            return;
+                        }
+
+                        double total = item.getPrice() * quantity;
+                        String paymentInput = JOptionPane.showInputDialog(
+                                this,
+                                String.format("Total is $%.2f. Enter payment amount:", total)
+                        );
+                        if (paymentInput == null || paymentInput.trim().isEmpty()) {
+                            return;
+                        }
+                        double payment = Double.parseDouble(paymentInput);
+                        displayArea.setText(customer.buyItem(item, quantity, payment) + "\n\n" + store.showAllItems());
+                    } catch (NumberFormatException ex) {
+                        displayArea.setText("Invalid number input.");
+                    }
                 } else {
                     displayArea.setText("Product not found.");
                 }
