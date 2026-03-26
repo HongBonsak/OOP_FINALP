@@ -9,6 +9,9 @@ public class Customer extends User {
     }
 
     public double calculateTotal(ClothingItem item, int quantity) {
+        if (item == null) {
+            throw new IllegalArgumentException("Item cannot be null.");
+        }
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be at least 1.");
         }
@@ -18,7 +21,9 @@ public class Customer extends User {
     public String buyItem(ClothingItem item, int quantity, double payment) {
         double total = calculateTotal(item, quantity);
         if (item.getStock() < quantity) {
-            throw new IllegalArgumentException(item.getName() + " does not have enough stock.");
+            throw new IllegalArgumentException(
+                    item.getName() + " does not have enough stock. Available: " + item.getStock()
+            );
         }
         if (payment < total) {
             throw new IllegalArgumentException(String.format("Insufficient payment. Total: $%.2f", total));
