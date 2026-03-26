@@ -20,9 +20,6 @@ public class Customer extends User {
         if (item.getStock() < quantity) {
             throw new IllegalArgumentException(item.getName() + " does not have enough stock.");
         }
-        if (payment < 0) {
-            throw new IllegalArgumentException("Payment cannot be negative.");
-        }
         if (payment < total) {
             throw new IllegalArgumentException(String.format("Insufficient payment. Total: $%.2f", total));
         }
