@@ -8,9 +8,6 @@ public class Customer extends User {
         if (item == null) {
             throw new IllegalArgumentException("Item cannot be null.");
         }
-        if (item.getStock() < 1) {
-            throw new IllegalArgumentException(item.getName() + " does not have enough stock. Available: " + item.getStock());
-        }
         return buyItem(item, 1, item.getPrice());
     }
 
@@ -21,16 +18,16 @@ public class Customer extends User {
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be at least 1.");
         }
-        return item.getPrice() * quantity;
-    }
-
-    public String buyItem(ClothingItem item, int quantity, double payment) {
-        double total = calculateTotal(item, quantity);
         if (item.getStock() < quantity) {
             throw new IllegalArgumentException(
                     item.getName() + " does not have enough stock. Available: " + item.getStock()
             );
         }
+        return item.getPrice() * quantity;
+    }
+
+    public String buyItem(ClothingItem item, int quantity, double payment) {
+        double total = calculateTotal(item, quantity);
         if (payment < total) {
             throw new IllegalArgumentException(String.format("Insufficient payment. Total: $%.2f", total));
         }

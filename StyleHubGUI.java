@@ -59,25 +59,43 @@ public class StyleHubGUI extends JFrame {
                 ClothingItem item = store.findItemByName(productName);
 
                 if (item != null) {
+                    String quantityInput = JOptionPane.showInputDialog(this, "Enter quantity:");
+                    if (quantityInput == null || quantityInput.trim().isEmpty()) {
+                        return;
+                    }
+                    int quantity;
                     try {
-                        String quantityInput = JOptionPane.showInputDialog(this, "Enter quantity:");
-                        if (quantityInput == null || quantityInput.trim().isEmpty()) {
-                            return;
-                        }
-                        int quantity = Integer.parseInt(quantityInput);
-
-                        double total = customer.calculateTotal(item, quantity);
-                        String paymentInput = JOptionPane.showInputDialog(
-                                this,
-                                String.format("Total is $%.2f. Enter payment amount:", total)
-                        );
-                        if (paymentInput == null || paymentInput.trim().isEmpty()) {
-                            return;
-                        }
-                        double payment = Double.parseDouble(paymentInput);
-                        displayArea.setText(customer.buyItem(item, quantity, payment) + "\n\n" + store.showAllItems());
+                        quantity = Integer.parseInt(quantityInput);
                     } catch (NumberFormatException ex) {
-                        displayArea.setText("Invalid quantity or payment amount entered.");
+                        displayArea.setText("Invalid quantity format.");
+                        return;
+                    }
+
+                    double total;
+                    try {
+                        total = customer.calculateTotal(item, quantity);
+                    } catch (IllegalArgumentException ex) {
+                        displayArea.setText(ex.getMessage());
+                        return;
+                    }
+
+                    String paymentInput = JOptionPane.showInputDialog(
+                            this,
+                            String.format("Total is $%.2f. Enter payment amount:", total)
+                    );
+                    if (paymentInput == null || paymentInput.trim().isEmpty()) {
+                        return;
+                    }
+                    double payment;
+                    try {
+                        payment = Double.parseDouble(paymentInput);
+                    } catch (NumberFormatException ex) {
+                        displayArea.setText("Invalid payment amount format.");
+                        return;
+                    }
+
+                    try {
+                        displayArea.setText(customer.buyItem(item, quantity, payment) + "\n\n" + store.showAllItems());
                     } catch (IllegalArgumentException ex) {
                         displayArea.setText(ex.getMessage());
                     }
