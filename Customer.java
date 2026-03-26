@@ -4,6 +4,11 @@ public class Customer extends User {
         super(name);
     }
 
+    @Override
+    public String getRole() {
+        return "Customer";
+    }
+
     public String buyItem(ClothingItem item) {
         if (item == null) {
             throw new IllegalArgumentException("Item cannot be null.");
@@ -36,7 +41,7 @@ public class Customer extends User {
         double change = payment - total;
         return String.format(
                 "%s bought: %s x%d%nPrice: $%.2f%nTotal: $%.2f%nPayment: $%.2f%nChange: $%.2f",
-                getName(),
+                getSummary(),
                 item.getName(),
                 quantity,
                 item.getPrice(),
