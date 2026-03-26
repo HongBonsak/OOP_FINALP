@@ -4,8 +4,13 @@ public class Seller extends User {
         super(name);
     }
 
+    @Override
+    public String getRole() {
+        return "Seller";
+    }
+
     public String addItem(StoreManager store, ClothingItem item) {
         store.addItem(item);
-        return getName() + " added: " + item.getName();
+        return getSummary() + " added: " + item.getName();
     }
 }

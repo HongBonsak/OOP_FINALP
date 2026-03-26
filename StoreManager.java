@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StoreManager {
-    private ArrayList<ClothingItem> items = new ArrayList<>();
+    private final List<ClothingItem> items = new ArrayList<>();
 
     public void addItem(ClothingItem item) {
         items.add(item);
@@ -22,7 +22,7 @@ public class StoreManager {
     }
 
     public List<ClothingItem> getItems() {
-        return items;
+        return new ArrayList<>(items);
     }
 
     public String showAllItems() {

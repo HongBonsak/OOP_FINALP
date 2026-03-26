@@ -1,4 +1,4 @@
-public class User {
+public abstract class User {
     private String name;
 
     public User(String name) {
@@ -11,5 +11,11 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public abstract String getRole();
+
+    public String getSummary() {
+        return getRole() + ": " + name;
     }
 }
