@@ -138,7 +138,7 @@ public class StyleHubGUI extends JFrame {
         panel.add(detailBtn);
 
         detailBtn.addActionListener(e -> {
-         displayArea.setText(store.showItemDetails());
-});
+            displayArea.setText(store.showItemDetails());
+        });
     }
 }

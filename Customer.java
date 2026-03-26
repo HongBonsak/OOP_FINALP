@@ -16,13 +16,13 @@ public class Customer extends User {
     }
 
     public String buyItem(ClothingItem item, int quantity, double payment) {
-        if (payment < 0) {
-            throw new IllegalArgumentException("Payment cannot be negative.");
-        }
+        double total = calculateTotal(item, quantity);
         if (item.getStock() < quantity) {
             throw new IllegalArgumentException(item.getName() + " does not have enough stock.");
         }
-        double total = calculateTotal(item, quantity);
+        if (payment < 0) {
+            throw new IllegalArgumentException("Payment cannot be negative.");
+        }
         if (payment < total) {
             throw new IllegalArgumentException(String.format("Insufficient payment. Total: $%.2f", total));
         }
