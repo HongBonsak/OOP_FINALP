@@ -65,12 +65,8 @@ public class StyleHubGUI extends JFrame {
                             return;
                         }
                         int quantity = Integer.parseInt(quantityInput);
-                        if (quantity <= 0) {
-                            displayArea.setText("Quantity must be at least 1.");
-                            return;
-                        }
 
-                        double total = item.getPrice() * quantity;
+                        double total = customer.calculateTotal(item, quantity);
                         String paymentInput = JOptionPane.showInputDialog(
                                 this,
                                 String.format("Total is $%.2f. Enter payment amount:", total)
@@ -82,6 +78,8 @@ public class StyleHubGUI extends JFrame {
                         displayArea.setText(customer.buyItem(item, quantity, payment) + "\n\n" + store.showAllItems());
                     } catch (NumberFormatException ex) {
                         displayArea.setText("Invalid number input.");
+                    } catch (IllegalArgumentException ex) {
+                        displayArea.setText(ex.getMessage());
                     }
                 } else {
                     displayArea.setText("Product not found.");

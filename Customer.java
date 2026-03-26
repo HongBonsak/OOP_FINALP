@@ -8,14 +8,23 @@ public class Customer extends User {
         return buyItem(item, 1, item.getPrice());
     }
 
-    public String buyItem(ClothingItem item, int quantity, double payment) {
+    public double calculateTotal(ClothingItem item, int quantity) {
         if (quantity <= 0) {
-            return "Quantity must be at least 1.";
+            throw new IllegalArgumentException("Quantity must be at least 1.");
         }
+        return item.getPrice() * quantity;
+    }
+
+    public String buyItem(ClothingItem item, int quantity, double payment) {
         if (item.getStock() < quantity) {
             return item.getName() + " does not have enough stock.";
         }
-        double total = item.getPrice() * quantity;
+        double total;
+        try {
+            total = calculateTotal(item, quantity);
+        } catch (IllegalArgumentException ex) {
+            return ex.getMessage();
+        }
         if (payment < total) {
             return String.format("Insufficient payment. Total: $%.2f", total);
         }
