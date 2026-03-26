@@ -77,7 +77,7 @@ public class StyleHubGUI extends JFrame {
                         double payment = Double.parseDouble(paymentInput);
                         displayArea.setText(customer.buyItem(item, quantity, payment) + "\n\n" + store.showAllItems());
                     } catch (NumberFormatException ex) {
-                        displayArea.setText("Invalid number input.");
+                        displayArea.setText("Invalid quantity or payment amount entered.");
                     } catch (IllegalArgumentException ex) {
                         displayArea.setText(ex.getMessage());
                     }

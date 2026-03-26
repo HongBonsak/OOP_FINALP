@@ -5,6 +5,12 @@ public class Customer extends User {
     }
 
     public String buyItem(ClothingItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException("Item cannot be null.");
+        }
+        if (item.getStock() < 1) {
+            throw new IllegalArgumentException(item.getName() + " does not have enough stock. Available: " + item.getStock());
+        }
         return buyItem(item, 1, item.getPrice());
     }
 
